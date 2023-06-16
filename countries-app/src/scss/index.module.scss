@@ -1,0 +1,33 @@
+@import "./mixins.scss";
+@import "./breakpoints.scss";
+@import "./variables.scss";
+
+$light-background: $white;
+$dark-background: $verydarkblue;
+
+@mixin style($background) {
+  background-color: $background;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font;
+  min-height: 100vh;
+  background: url("../assets/background/background-mobile.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  scroll-behavior: smooth;
+  // &.light {
+  //   @include style($light-background);
+  // }
+  // &.dark {
+  //   @include style($dark-background);
+  // }
+}
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}

@@ -7,11 +7,16 @@ import MenuItem from "@mui/material/MenuItem"
 import InputLabel from "@mui/material/InputLabel"
 import FormControl from "@mui/material/FormControl"
 import styles from "../../scss/Filter.module.scss"
+import { useAppSelector, useAppDispatch } from "../../app/hooks"
+import classNames from "classnames";
 
 const Filter = () => {
+  const currentStyle = useAppSelector((state) => state.theme.currentStyle);
+  const darkTheme = currentStyle === "light" ? '#000000' : '#ffffff';
+
   return (
     <div className={styles.filterWrapper}>
-      <div className={styles.search}>
+      <div className={classNames(styles.search, styles[currentStyle])}>
         <Box
           sx={{
             display: "flex",
@@ -24,6 +29,7 @@ const Filter = () => {
               mr: 1,
               my: 0.5,
               verticalAlign: "middle",
+              color: darkTheme,
             }}
           />
           <TextField
@@ -39,6 +45,7 @@ const Filter = () => {
               style: {
                 width: "280px",
                 fontFamily: "'Nunito Sans', sans-serif",
+                color: darkTheme,
               },
             }}
             sx={{
@@ -47,10 +54,10 @@ const Filter = () => {
           />
         </Box>
       </div>
-      <div className={styles.filter}>
+      <div className={classNames(styles.filter, styles[currentStyle])}>
         <Box sx={{ minWidth: 200 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label" sx={{ fontFamily: "'Nunito Sans', sans-serif", color: "#000000", }}>Filter by Region</InputLabel>
+            <InputLabel id="demo-simple-select-label" sx={{ fontFamily: "'Nunito Sans', sans-serif", color: currentStyle === "light" ? '#000000' : '#a3a3a3' }}>Filter by Region</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -58,7 +65,7 @@ const Filter = () => {
               label="Filter by Region"
               sx={{
                 fontFamily: "'Nunito Sans', sans-serif",
-                color: "#a3a3a3",
+                color: darkTheme,
                 "& fieldset": { border: "none" },
               }}
             >

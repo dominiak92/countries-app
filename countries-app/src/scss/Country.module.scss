@@ -1,0 +1,68 @@
+@import "./mixins.scss";
+@import "./breakpoints.scss";
+@import "./variables.scss";
+
+$light-background: rgba(255, 255, 255, 0.5);
+$dark-background: rgba(0,0,0,0.45);
+$light-color: $verydarkblue;
+$dark-color: #ffffffc9;
+
+@mixin style($background) {
+  background-color: $background;
+}
+
+@mixin textstyle($color) {
+  color: $color;
+}
+
+.countryWrapper {
+  padding: 5vw;
+
+  .dataWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .mapButton {
+      margin: 3vw;
+    }
+    .flag {
+      margin-top: 8vw;
+
+      .flagImg {
+        width: 70vw;
+        border-radius: 1vw;
+        -webkit-box-shadow: 1.5px 0 30px -10px #393939;
+        -moz-box-shadow: 1.5px 0 30px -10px #393939;
+        box-shadow: 1.5px 0 30px -10px #393939;
+      }
+    }
+    .information {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      min-width: 70vw;
+      padding: 7vw;
+      @include glass;
+      font-size: 4vw;
+      transition: all 0.3s ease;
+      &.light {
+        @include style($light-background);
+      }
+      &.dark {
+        @include style($dark-background);
+        @include textstyle($dark-color)
+      }
+      .name {
+        font-size: 7vw;
+        font-weight: 800;
+        margin: 0;
+      }
+      span {
+        font-weight: 600;
+      }
+    }
+  }
+}

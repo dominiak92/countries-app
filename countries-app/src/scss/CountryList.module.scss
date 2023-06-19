@@ -2,26 +2,66 @@
 @import "./breakpoints.scss";
 @import "./variables.scss";
 
-.countriesWrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-.card {
-    width: 70vw;
-    height: 336px;
-    background: rgba(255,255,255,0.5);
--webkit-backdrop-filter: blur(10px);
-backdrop-filter: blur(10px);
-border: 1px solid rgba(255,255,255,0.25);
-box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.0294384);
-border-radius: 5px;
-margin-top: 40px;
-margin-bottom: 40px;
-.flag {
-    .flagImg {
-        max-width: 70vw;
-    }
+$light-background: rgba(255, 255, 255, 0.5);
+$dark-background: rgba(0,0,0,0.45);
+$light-color: $verydarkblue;
+$dark-color: #ffffffc9;
+
+@mixin style($background) {
+  background-color: $background;
 }
+
+@mixin textstyle($color) {
+  color: $color;
+}
+
+.countriesWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .card {
+    width: 70vw;
+    min-height: 70vw;
+    background: rgba(255, 255, 255, 0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.0294384);
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    &.light {
+      @include style($light-background);
+    }
+    &.dark {
+      @include style($dark-background);
+      @include textstyle($dark-color)
+    }
+    .flag {
+      .flagImg {
+        width: 70vw;
+      }
+    }
+    .informations {
+      padding: 7vw;
+      box-sizing: content-box;
+      span {
+        font-weight: 600;
+      }
+      .description {
+        font-size: 4vw;
+        margin-top: 2.5vw;
+        margin-bottom: 0;
+      }
+      .name {
+        margin: 0;
+        font-weight: 800;
+        font-size: 6vw;
+        line-height: 5.6vw;
+        margin-bottom: 5vw;
+      }
+    }
   }
 }

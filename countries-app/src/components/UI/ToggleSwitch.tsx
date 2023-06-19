@@ -1,5 +1,7 @@
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { toggleTheme } from "../../features/country/themeSlice";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -49,9 +51,14 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   }));
   
   const ToggleSwitch = () => {
+    const currentStyle = useAppSelector((state) => state.theme.currentStyle);
+    const dispatch = useAppDispatch();
   
     return (
       <MaterialUISwitch
+      value={currentStyle}
+      checked={currentStyle === "dark"}
+      onClick={() => dispatch(toggleTheme())}
         sx={{ m: 1 }}
       />
     );

@@ -6,19 +6,35 @@ interface Country {
   name: {
     common: string;
     official: string;
-  }
+    nativeName: {
+      [key: string]: {
+        official: string;
+        common: string;
+      };
+    };
+  };
   population: number;
   region: string;
-  capital: string;
+  capital: string[];
   subregion: string;
-  languages: string[];
   tld: string;
-  currencies: string;
-  borders: string;
+  maps : {
+    googleMaps: string;
+  }
+  currencies: {
+    [key: string]: {
+      name: string;
+    };
+  };
+  languages: {
+    [key: string]: string;
+  };
+  borders?: string;
   flags: {
     png: string;
     alt: string;
   }
+  cca3: string;
 }
 
 interface CountryState {

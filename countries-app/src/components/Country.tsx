@@ -8,9 +8,9 @@ import styles from "../scss/Country.module.scss"
 import Fab from "@mui/material/Fab"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocationOnIcon from "@mui/icons-material/LocationOn"
 import Button from "@mui/material/Button"
-import MapIcon from '@mui/icons-material/Map';
+import MapIcon from "@mui/icons-material/Map"
 import classNames from "classnames"
 
 const theme = createTheme({
@@ -30,32 +30,35 @@ const theme = createTheme({
 })
 
 const Country = () => {
-  const { id } = useParams() as { id: string }
+  const { cca3 } = useParams() as { cca3: string }
   const countriesData = useAppSelector((state) => state.country.data)
   const dispatch = useAppDispatch()
-  const currentStyle = useAppSelector((state) => state.theme.currentStyle);
-  const darkBackground = currentStyle === 'light' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0,0,0,0.45)'
-  const darkColor = currentStyle === 'light' ? '#000000' : '#a3a3a3'
+  const currentStyle = useAppSelector((state) => state.theme.currentStyle)
+  const darkBackground =
+    currentStyle === "light" ? "rgba(255, 255, 255, 0.5)" : "rgba(0,0,0,0.45)"
+  const darkColor = currentStyle === "light" ? "#000000" : "#a3a3a3"
 
   useEffect(() => {
     dispatch(getCountries())
   }, [dispatch])
 
-  const country = countriesData?.[parseInt(id)]
+  const country = countriesData?.find((c) => c.cca3.toLowerCase() === cca3)
   const languagesArray = country?.languages
+  const borderArray = country?.borders
   const values: string[] = []
+  const borderCountries: string[] = []
 
   if (languagesArray) {
     for (let value of Object.values(languagesArray)) {
       values.push(value)
     }
   }
-  const indices = countriesData.reduce((acc: number[], obj, index) => {
-    if (country?.borders?.includes(obj.cca3)) {
-      acc.push(index)
+
+  if (borderArray) {
+    for (let value of Object.values(borderArray)) {
+      borderCountries.push(value)
     }
-    return acc
-  }, [])
+  }
 
   const firstNativeNameKey = Object.keys(country?.name?.nativeName || {})[0]
   const firstNativeNameObject = country?.name?.nativeName?.[firstNativeNameKey]
@@ -68,7 +71,10 @@ const Country = () => {
       <div className={styles.header}>
         <Link to="/">
           <ThemeProvider theme={theme}>
-            <Fab sx={{ backgroundColor: darkBackground, color: darkColor}} variant="extended">
+            <Fab
+              sx={{ backgroundColor: darkBackground, color: darkColor }}
+              variant="extended"
+            >
               <ArrowBackIcon sx={{ mr: 1 }} />
               Back
             </Fab>
@@ -91,7 +97,10 @@ const Country = () => {
               rel="noopener noreferrer"
             >
               <ThemeProvider theme={theme}>
-                <Fab sx={{ backgroundColor: darkBackground, color: darkColor}} variant="extended">
+                <Fab
+                  sx={{ backgroundColor: darkBackground, color: darkColor }}
+                  variant="extended"
+                >
                   <LocationOnIcon sx={{ mr: 1 }} />
                   {country.name.common}
                 </Fab>
@@ -124,7 +133,7 @@ const Country = () => {
             </div>
             <div className={styles.lowerInformation}>
               <p className={styles.tld}>
-                <span>Top Level Domain:</span> {country.tld}
+                <span>Top Level Domain:</span> {country.tld[0]}
               </p>
               <p className={styles.currencies}>
                 <span>Currencies:</span>{" "}
@@ -136,29 +145,39 @@ const Country = () => {
                 </p>
               ) : null}
               <p className={styles.border}>
-                {indices.length !== 0 ? <span>Border Countries:</span> : null}
+                {borderCountries.length !== 0 ? (
+                  <span>Border Countries:</span>
+                ) : null}
               </p>{" "}
-              {indices.map((e, index) => (
-                <Link key={index} to={`/country/${e}`}>
-                  <Button
-                    sx={{
-                      fontFamily: "Nunito Sans",
-                      fontWeight: '600',
-                      backgroundColor: "rgba(255, 255, 255, 0.5);",
-                      backdropFilter: "blur(10px);",
-                      color: "black",
-                      margin: "0.8vw",
-                      "&:hover": {
-                        backgroundColor: "rgba(255, 255, 255, 1);",
+              {borderCountries.map((e, index) => {
+                const matchingCountries = countriesData?.find(
+                  (element) => element.cca3 === e,
+                )
+                const countryNames = matchingCountries?.name.common
+
+                return (
+                  <Link key={index} to={`/country/${e.toLowerCase()}`}>
+                    <Button
+                      sx={{
+                        fontFamily: "Nunito Sans",
+                        fontWeight: "600",
+                        backgroundColor: "rgba(255, 255, 255, 0.5);",
                         backdropFilter: "blur(10px);",
-                      },
-                    }}
-                    variant="contained"
-                  >
-                    {countriesData?.[e].name.common}
-                  </Button>
-                </Link>
-              ))}
+                        color: "black",
+                        margin: "0.8vw",
+                        "&:hover": {
+                          backgroundColor: "rgba(255, 255, 255, 1);",
+                          backdropFilter: "blur(10px);",
+                        },
+                      }}
+                      variant="contained"
+                    >
+                      {/* {countriesData?.[e].name.common} */}
+                      {countryNames}
+                    </Button>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </div>

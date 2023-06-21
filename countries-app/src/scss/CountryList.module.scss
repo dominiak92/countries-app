@@ -3,7 +3,7 @@
 @import "./variables.scss";
 
 $light-background: rgba(255, 255, 255, 0.5);
-$dark-background: rgba(0,0,0,0.45);
+$dark-background: rgba(0, 0, 0, 0.45);
 $light-color: $verydarkblue;
 $dark-color: #ffffffc9;
 
@@ -37,7 +37,7 @@ $dark-color: #ffffffc9;
     }
     &.dark {
       @include style($dark-background);
-      @include textstyle($dark-color)
+      @include textstyle($dark-color);
     }
     .flag {
       .flagImg {
@@ -63,5 +63,29 @@ $dark-color: #ffffffc9;
         margin-bottom: 5vw;
       }
     }
+  }
+  .error {
+    .ico {
+        font-size: 10vw;
+    }
+    margin: 5vw;
+    max-width: 80vw;
+    padding: 6vw;
+    @include glass;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    font-weight: 600;
+    transition: all 0.2s linear;
+    &.light {
+        @include style($light-background);
+      }
+      &.dark {
+        @include style($dark-background);
+        @include textstyle($dark-color);
+      }
   }
 }

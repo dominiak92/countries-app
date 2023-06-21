@@ -2,14 +2,16 @@ import React from "react"
 import Filter from "./UI/Filter"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { useEffect, useState } from "react"
-import { getCountries } from "../features/country/countrySlice"
+import { getCountries, setFilteredCountries } from "../features/country/countrySlice"
 import classNames from "classnames"
 import Fab from "@mui/material/Fab"
 import styles from "../scss/CountryList.module.scss"
+import PublicOffIcon from '@mui/icons-material/PublicOff';
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { Link, LinkProps } from "react-router-dom"
 import Skeleton from "@mui/material/Skeleton"
+import ScrollToTopFab from "./UI/ScrollToTopFab"
 
 const theme = createTheme({
   components: {
@@ -30,11 +32,15 @@ const theme = createTheme({
 const CountryList = () => {
   const dispatch = useAppDispatch()
   const countriesData = useAppSelector((state) => state.country.data)
+  const filteredCountries = useAppSelector(
+    (state) => state.country.filteredCountries,
+  )
   const loading = useAppSelector((state) => state.country.loading)
   const currentStyle = useAppSelector((state) => state.theme.currentStyle)
   const countriesPerRow = 8
-  const darkBackground = currentStyle === 'light' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0,0,0,0.45)'
-  const darkColor = currentStyle === 'light' ? '#000000' : '#a3a3a3'
+  const darkBackground =
+    currentStyle === "light" ? "rgba(255, 255, 255, 0.5)" : "rgba(0,0,0,0.45)"
+  const darkColor = currentStyle === "light" ? "#000000" : "#a3a3a3"
 
   const [next, setNext] = useState(countriesPerRow)
   const handleMoreJob = () => {
@@ -45,15 +51,22 @@ const CountryList = () => {
     dispatch(getCountries())
   }, [dispatch])
 
+  useEffect(() => {
+    if (countriesData.length > 0) {
+      dispatch(setFilteredCountries(countriesData));
+    }
+  }, [dispatch, countriesData]);
+
 
   return (
     <div>
       <Filter />
       <div className={styles.countriesWrapper}>
-        {countriesData &&
-          countriesData?.slice(0, next)?.map((e, index) =>
+      <ScrollToTopFab/>
+        {filteredCountries &&
+          filteredCountries?.slice(0, next)?.map((e, index) =>
             !loading ? (
-              <Link to={{ pathname: `/country/${index}` }} key={index}>
+              <Link to={{ pathname: `/country/${e.cca3.toLowerCase()}` }} key={index}>
                 <div className={classNames(styles.card, styles[currentStyle])}>
                   <div className={styles.flag}>
                     <img
@@ -88,14 +101,23 @@ const CountryList = () => {
               />
             ),
           )}
-        {next < countriesData?.length && (
+        {next < filteredCountries?.length && (
           <ThemeProvider theme={theme}>
-            <Fab sx={{ backgroundColor: darkBackground, color: darkColor, marginBottom: '4vw' }} onClick={handleMoreJob} variant="extended">
+            <Fab
+              sx={{
+                backgroundColor: darkBackground,
+                color: darkColor,
+                marginBottom: "4vw",
+              }}
+              onClick={handleMoreJob}
+              variant="extended"
+            >
               <KeyboardDoubleArrowDownIcon sx={{ mr: 1 }} />
               Load More
             </Fab>
           </ThemeProvider>
         )}
+        {filteredCountries?.length === 0 && !loading && <div className={classNames(styles.error, styles[currentStyle])}><PublicOffIcon className={styles.ico}/><p>The country you are looking for was not found</p></div>}
       </div>
     </div>
   )

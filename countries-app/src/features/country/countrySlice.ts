@@ -39,6 +39,7 @@ interface Country {
 
 interface CountryState {
   data: Country[];
+  filteredCountries: Country[];
   isSuccess: boolean;
   loading: boolean;
   error?: string | null;
@@ -47,13 +48,14 @@ interface CountryState {
 
 const initialState: CountryState = {
   data: [],
+  filteredCountries: [],
   isSuccess: false,
   loading: false,
 };
 
 export const getCountries = createAsyncThunk(
   "countries/getcountries",
-  async (arg, { rejectWithValue }) => {
+  async () => {
     try {
       const { data } = await axios.get(
         "https://restcountries.com/v3.1/all"
@@ -66,15 +68,14 @@ export const getCountries = createAsyncThunk(
 );
 
 
+
 const countriesSlice = createSlice({
   name: "data",
   initialState,
   reducers: {
-    // setFilteredJobs: (state, action) => {
-    //   state.filter = action.payload;
-    //   // state.filter = state.data
-    //   console.log(state.data);
-    // },
+ setFilteredCountries: (state, action) => {
+   state.filteredCountries = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCountries.pending, (state, action) => {
@@ -92,5 +93,6 @@ const countriesSlice = createSlice({
   },
 });
 
-// export const { setFilteredJobs } = countriesSlice.actions;
+export const { setFilteredCountries } = countriesSlice.actions;
+export type { Country };
 export default countriesSlice.reducer;

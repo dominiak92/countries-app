@@ -14,59 +14,105 @@ $dark-color: #ffffffc9;
 @mixin textstyle($color) {
   color: $color;
 }
-
-.countriesWrapper {
+.countryListWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .card {
-    width: 70vw;
-    min-height: 70vw;
-    background: rgba(255, 255, 255, 0.5);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.0294384);
-    border-radius: 5px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    &.light {
-      @include style($light-background);
+  .countriesWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @include lg {
+      padding-top: 1vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 22vw);
+      justify-content: space-evenly;
+      grid-gap: 0vw;
+      align-items: flex-start;
+      margin: 25px auto;
+      margin-bottom: 0;
+      width: 100%;
     }
-    &.dark {
-      @include style($dark-background);
-      @include textstyle($dark-color);
-    }
-    .flag {
-      .flagImg {
-        width: 70vw;
+    .card {
+      width: 70vw;
+      min-height: 70vw;
+      background: rgba(255, 255, 255, 0.5);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 13px 27px -5px hsla(240, 30.1%, 28%, 0.25), 0 8px 16px -8px hsla(0, 0%, 0%, 0.3), 0 -6px 16px -6px hsla(0, 0%, 0%, 0.03);
+      transition: all ease 200ms;
+      border-radius: 5px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      &:hover {
+        transform: scale(1.03);
+        box-shadow: 0 13px 40px -5px hsla(240, 30.1%, 28%, 0.12), 0 8px 32px -8px hsla(0, 0%, 0%, 0.14), 0 -6px 32px -6px hsla(0, 0%, 0%, 0.02);
       }
-    }
-    .informations {
-      padding: 7vw;
-      box-sizing: content-box;
-      span {
-        font-weight: 600;
+      @include lg {
+        width: 19vw;
+        max-height: 37vw;
+        min-height: 19vw;
+        margin-top: 0;
       }
-      .description {
-        font-size: 4vw;
-        margin-top: 2.5vw;
-        margin-bottom: 0;
+      &.light {
+        @include style($light-background);
       }
-      .name {
-        margin: 0;
-        font-weight: 800;
-        font-size: 6vw;
-        line-height: 5.6vw;
-        margin-bottom: 5vw;
+      &.dark {
+        @include style($dark-background);
+        @include textstyle($dark-color);
+      }
+      .flag {
+        .flagImg {
+          width: 70vw;
+          @include lg {
+            width: 19vw;
+            min-height: 11vw;
+            max-height: 11vw;
+          }
+        }
+      }
+      .informations {
+        padding: 7vw;
+        box-sizing: content-box;
+        @include lg {
+          padding: 1.5vw;
+          padding-top: 1vw;
+        }
+        span {
+          font-weight: 600;
+        }
+        .description {
+          font-size: 4vw;
+          margin-top: 2.5vw;
+          margin-bottom: 0;
+          @include lg {
+            margin-top: 0.5vw;
+            margin-bottom: 0;
+            font-size: 1vw;
+          }
+        }
+        .name {
+          margin: 0;
+          font-weight: 800;
+          font-size: 6vw;
+          line-height: 5.6vw;
+          margin-bottom: 5vw;
+          @include lg {
+            line-height: 1.6vw;
+            font-size: 1.3vw;
+            margin-bottom: 1.6vw;
+          }
+        }
       }
     }
   }
   .error {
     .ico {
-        font-size: 10vw;
+      font-size: 10vw;
     }
     margin: 5vw;
     max-width: 80vw;
@@ -80,12 +126,16 @@ $dark-color: #ffffffc9;
     font-size: 20px;
     font-weight: 600;
     transition: all 0.2s linear;
+    @include lg {
+      max-width: 30vw;
+      padding: 3vw;
+    }
     &.light {
-        @include style($light-background);
-      }
-      &.dark {
-        @include style($dark-background);
-        @include textstyle($dark-color);
-      }
+      @include style($light-background);
+    }
+    &.dark {
+      @include style($dark-background);
+      @include textstyle($dark-color);
+    }
   }
 }

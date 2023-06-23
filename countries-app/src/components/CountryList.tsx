@@ -11,7 +11,9 @@ import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrow
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { Link, LinkProps } from "react-router-dom"
 import Skeleton from "@mui/material/Skeleton"
-import ScrollToTopFab from "./UI/ScrollToTopFab"
+import { useMediaQuery } from "react-responsive"
+import { useSpring, animated, useInView } from "@react-spring/web";
+
 
 const theme = createTheme({
   components: {
@@ -29,7 +31,9 @@ const theme = createTheme({
   },
 })
 
+
 const CountryList = () => {
+  const isDesktop = useMediaQuery({ maxWidth: 992 })
   const dispatch = useAppDispatch()
   const countriesData = useAppSelector((state) => state.country.data)
   const filteredCountries = useAppSelector(
@@ -47,6 +51,23 @@ const CountryList = () => {
     setNext(next + countriesPerRow)
   }
 
+  const fadePage = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+  });
+
+  const [ref, springs] = useInView(
+    () => ({
+      from: {
+        y: 60,
+      },
+      to: {
+        y: 0,
+      },
+    }),
+  )
+
+
   useEffect(() => {
     dispatch(getCountries())
   }, [dispatch])
@@ -57,12 +78,13 @@ const CountryList = () => {
     }
   }, [dispatch, countriesData]);
 
+  const desktopSkeleton = isDesktop? '19vw' : '70vw'
+
 
   return (
-    <div>
+    <div className={styles.countryListWrapper}>
       <Filter />
-      <div className={styles.countriesWrapper}>
-      <ScrollToTopFab/>
+      <animated.div ref={ref} style={springs} className={styles.countriesWrapper}>
         {filteredCountries &&
           filteredCountries?.slice(0, next)?.map((e, index) =>
             !loading ? (
@@ -71,6 +93,7 @@ const CountryList = () => {
                   <div className={styles.flag}>
                     <img
                       className={styles.flagImg}
+                      loading="lazy"
                       src={e.flags.png}
                       alt={e.flags.alt}
                     />
@@ -96,12 +119,13 @@ const CountryList = () => {
                 style={{ marginBottom: 6 }}
                 animation="wave"
                 variant="rounded"
-                width={"70vw"}
-                height={"70vw"}
+                width={desktopSkeleton}
+                height={desktopSkeleton}
               />
             ),
           )}
-        {next < filteredCountries?.length && (
+      </animated.div>
+      {next < filteredCountries?.length && (
           <ThemeProvider theme={theme}>
             <Fab
               sx={{
@@ -117,8 +141,7 @@ const CountryList = () => {
             </Fab>
           </ThemeProvider>
         )}
-        {filteredCountries?.length === 0 && !loading && <div className={classNames(styles.error, styles[currentStyle])}><PublicOffIcon className={styles.ico}/><p>The country you are looking for was not found</p></div>}
-      </div>
+      {filteredCountries?.length === 0 && !loading && <div className={classNames(styles.error, styles[currentStyle])}><PublicOffIcon className={styles.ico}/><p>The country you are looking for was not found</p></div>}
     </div>
   )
 }

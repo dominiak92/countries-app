@@ -11,13 +11,13 @@ import styles from "../../scss/Filter.module.scss"
 import { useAppSelector, useAppDispatch } from "../../app/hooks"
 import { setFilteredCountries } from "../../features/country/countrySlice"
 import classNames from "classnames"
-import { Country } from "../../features/country/countrySlice"
+import { useMediaQuery } from "react-responsive"
 
 const Filter = () => {
   const dispatch = useAppDispatch();
   const [region, setRegion] = useState("");
   const [inputValue, setInputValue] = useState("");
-
+  const isDesktop = useMediaQuery({ maxWidth: 992 })
   const currentStyle = useAppSelector((state) => state.theme.currentStyle);
   const countriesData = useAppSelector((state) => state.country.data);
   const darkTheme = currentStyle === "light" ? "#000000" : "#ffffff";
@@ -71,11 +71,13 @@ const Filter = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            margin: 0.1
           }}
         >
           <SearchIcon
             sx={{
               mr: 1,
+              ml: 2,
               my: 0.5,
               verticalAlign: "middle",
               color: darkTheme,
@@ -84,16 +86,17 @@ const Filter = () => {
           <TextField
             id="demo-helper-text-misaligned-no-helper"
             label={"Search for a country..."}
+            
             onChange={countrySetter}
             InputLabelProps={{
               style: {
                 fontFamily: "'Nunito Sans', sans-serif",
-                color: "#a3a3a3",
+                color: currentStyle === "light" ? "#000000" : "#a3a3a3",
               },
             }}
             InputProps={{
               style: {
-                width: "280px",
+                width: isDesktop? '85vw' : '19vw',
                 fontFamily: "'Nunito Sans', sans-serif",
                 color: darkTheme,
               },
@@ -105,18 +108,25 @@ const Filter = () => {
         </Box>
       </div>
       <div className={classNames(styles.filter, styles[currentStyle])}>
-        <Box sx={{ minWidth: 200 }}>
-          <FormControl fullWidth>
+        <Box>
+          <FormControl sx={{ m: 1, minWidth: 160, margin: 0.1}} size="small">
             <InputLabel
               id="demo-simple-select-label"
               sx={{
                 fontFamily: "'Nunito Sans', sans-serif",
                 color: currentStyle === "light" ? "#000000" : "#a3a3a3",
+                fontSize: '14px'
               }}
             >
               Filter by Region
             </InputLabel>
             <Select
+                MenuProps={{
+                  style: {
+                    maxHeight: 250,
+                       },
+                  disableScrollLock: true,
+                }}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={region}

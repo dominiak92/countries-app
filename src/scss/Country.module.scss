@@ -1,0 +1,113 @@
+@import "./mixins.scss";
+@import "./breakpoints.scss";
+@import "./variables.scss";
+
+$light-background: rgba(255, 255, 255, 0.5);
+$dark-background: rgba(0, 0, 0, 0.45);
+$light-color: $verydarkblue;
+$dark-color: #ffffffc9;
+
+@mixin style($background) {
+  background-color: $background;
+}
+
+@mixin textstyle($color) {
+  color: $color;
+}
+
+.countryWrapper {
+  padding: 5vw;
+  @include lg {
+    padding: 0;
+    padding-top: 2vw;
+    width: 80%;
+  }
+
+  .dataWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    @include lg {
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: flex-start;
+      padding-top: 3vw;
+    }
+    .flagMapWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      .mapButton {
+        margin: 3vw;
+      }
+      .flag {
+        margin-top: 8vw;
+        @include lg {
+            margin: 0;
+        }
+
+        .flagImg {
+          width: 70vw;
+          border-radius: 1vw;
+          -webkit-box-shadow: 1.5px 0 30px -10px #393939;
+          -moz-box-shadow: 1.5px 0 30px -10px #393939;
+          box-shadow: 1.5px 0 30px -10px #393939;
+          @include lg {
+            width: 35vw;
+            border-radius: 0.5vw;
+          }
+        }
+      }
+    }
+    .information {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      min-width: 70vw;
+      padding: 7vw;
+      @include glass;
+      font-size: 4vw;
+      transition: all 0.3s ease;
+      @include lg {
+        min-width: 30vw;
+        font-size: 1vw;
+        max-width: 30vw;
+        padding: 2vw;
+      }
+      .informationWrapper {
+        @include lg {
+            display: flex;
+            justify-content: center;
+        }
+        .lowerInformation {
+            margin-top: 6vw;
+            @include lg {
+                margin: 0;
+                margin-left: 3vw;
+            }
+        }
+      }
+      &.light {
+        @include style($light-background);
+      }
+      &.dark {
+        @include style($dark-background);
+        @include textstyle($dark-color);
+      }
+      .name {
+        font-size: 7vw;
+        font-weight: 800;
+        margin: 0;
+        @include lg {
+            font-size: 2vw;
+        }
+      }
+      span {
+        font-weight: 600;
+      }
+    }
+  }
+}

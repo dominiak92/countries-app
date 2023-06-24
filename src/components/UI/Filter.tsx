@@ -96,7 +96,7 @@ const Filter = () => {
             }}
             InputProps={{
               style: {
-                width: isDesktop? '85vw' : '19vw',
+                width: isDesktop? '81vw' : '19vw',
                 fontFamily: "'Nunito Sans', sans-serif",
                 color: darkTheme,
               },
